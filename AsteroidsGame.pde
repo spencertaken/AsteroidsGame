@@ -117,7 +117,7 @@ public void draw() {
     fill(255,0,0); 
     text("GAME OVER", 220, 250);
   }
-  if (eggplant.size()-2 < 1) {
+  if (eggplant.size() < 1) {
     fill(0,255,100); 
     text("YOU WON!!", 220, 250);
   }
