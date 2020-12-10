@@ -1,18 +1,21 @@
 Spaceship bob = new Spaceship(); 
 ArrayList <Asteroid> eggplant = new ArrayList <Asteroid>(); 
+ArrayList <Bullet> pewpew = new ArrayList <Bullet>(); 
 Star[] nightSky = new Star[200]; 
 boolean isAccelerating = false; 
 boolean isDecelerating = false; 
 boolean isTurnClockwise = false; 
 boolean isTurnCounterclockwise = false; 
+boolean shootythingy = false; 
+int j = 0; 
 public void setup() {
   size(500, 500); 
   background(0); 
   for (int i=0; i<nightSky.length; i++) {
     nightSky[i] = new Star();
   }
-  for (int i=0; i<15; i++){
-    eggplant.add(new Asteroid()); 
+  for (int i=0; i<15; i++) {
+    eggplant.add(new Asteroid());
   }
 }
 public void keyPressed() {
@@ -39,6 +42,9 @@ public void keyPressed() {
   if (key == 'a') {
     isTurnCounterclockwise = true;
   }
+  if (key == ' ') {
+    shootythingy = true;
+  }
 }
 public void keyReleased() {
   if (key == 'w') {
@@ -53,9 +59,15 @@ public void keyReleased() {
   if (key == 'a') {
     isTurnCounterclockwise = false;
   }
+  if (key == ' ') {
+    shootythingy = false;
+  }
 }
 public void draw() {
   background(0);
+  stroke(0); 
+  fill(0); 
+  ellipse(250,250,5,5); 
   for (int i=0; i<nightSky.length; i++) {
     nightSky[i].show();
   }
@@ -73,13 +85,28 @@ public void draw() {
   if (isTurnCounterclockwise) {
     bob.turn(-6);
   }
-  for (int i = 0; i<eggplant.size(); i++){
-    if (dist((float)eggplant.get(i).getAsteroidCenterX(),(float)eggplant.get(i).getAsteroidCenterY(), (float)bob.getSpaceshipCenterX(), (float)bob.getSpaceshipCenterY()) < 15) {
-      eggplant.remove(i); 
-    }
+  if (shootythingy) {
+    pewpew.add(new Bullet(bob));
+    pewpew.get(j).accelerate(2);
+  }
+  for (int i = 0; i<eggplant.size(); i++) {
+    if (dist((float)eggplant.get(i).getAsteroidCenterX(), (float)eggplant.get(i).getAsteroidCenterY(), (float)bob.getSpaceshipCenterX(), (float)bob.getSpaceshipCenterY()) < 15) {
+      eggplant.remove(i);
+    } 
     else {
-    eggplant.get(i).move(); 
-    eggplant.get(i).show();
+      eggplant.get(i).move(); 
+      eggplant.get(i).show();
+    }
+  }
+  if (pewpew.size() > 1) {
+    for (j = 0; j<pewpew.size(); j++) { 
+      pewpew.get(j).move();
+      pewpew.get(j).show();
+      pewpew.get(j).destroy(); 
+      if (pewpew.get(j).getBulletCenterX() > width-1 || pewpew.get(j).getBulletCenterX() < 0+1 || pewpew.get(j).getBulletCenterY() < 0+1 || pewpew.get(j).getBulletCenterY() > height-1) {
+        pewpew.remove(j);
+        j--;
+      }
     }
   }
 }
