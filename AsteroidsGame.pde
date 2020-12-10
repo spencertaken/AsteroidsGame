@@ -8,6 +8,7 @@ boolean isTurnClockwise = false;
 boolean isTurnCounterclockwise = false; 
 boolean shootythingy = false; 
 int j = 0; 
+int healthlyness = 0; 
 public void setup() {
   size(500, 500); 
   background(0); 
@@ -92,6 +93,7 @@ public void draw() {
   for (int i = 0; i<eggplant.size(); i++) {
     if (dist((float)eggplant.get(i).getAsteroidCenterX(), (float)eggplant.get(i).getAsteroidCenterY(), (float)bob.getSpaceshipCenterX(), (float)bob.getSpaceshipCenterY()) < 15) {
       eggplant.remove(i);
+      healthlyness++; 
     } 
     else {
       eggplant.get(i).move(); 
@@ -108,5 +110,15 @@ public void draw() {
         j--;
       }
     }
+  }
+  if (healthlyness >= 3) {
+    fill(0);
+    rect(0,0,500,500);
+    fill(255,0,0); 
+    text("GAME OVER", 220, 250);
+  }
+  if (eggplant.size()-2 < 1) {
+    fill(0,255,100); 
+    text("YOU WON!!", 220, 250);
   }
 }
